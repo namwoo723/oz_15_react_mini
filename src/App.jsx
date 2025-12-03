@@ -19,7 +19,6 @@ function App() {
 
   return (
     <>
-      <MovieDetail />
       <div className="app">
         <div className="movie-list">
           {movies.map((movie) => (
