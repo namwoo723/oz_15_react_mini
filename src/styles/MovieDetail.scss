@@ -1,0 +1,33 @@
+.movie-detail {
+  display: flex;
+}
+
+.poster-wrap{
+  margin: 2rem;
+}
+
+.info-wrap {
+  
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem;
+}
+
+.genres {
+  font-size: 1.1rem;
+  margin: 2rem;
+}
+
+.overview {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}

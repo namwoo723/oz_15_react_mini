@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import movieListData from "./movieListData.json"
 import Moviecard from "./component/MovieCard"
-import './App.css'
+import './App.scss'
+import MovieDetail from './pages/MovieDetail'
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/w500" 
 
@@ -18,6 +19,7 @@ function App() {
 
   return (
     <>
+      <MovieDetail />
       <div className="app">
         <div className="movie-list">
           {movies.map((movie) => (
