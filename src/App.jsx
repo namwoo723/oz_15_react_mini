@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 import movieListData from "./movieListData.json"
 import Moviecard from "./component/MovieCard"
 import './App.scss'
-import MovieDetail from './pages/MovieDetail'
+import { Navigation, Pagination } from 'swiper/modules'
+import { SwiperSlide, Swiper } from 'swiper/react'
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/w500" 
 
@@ -20,16 +24,25 @@ function App() {
   return (
     <>
       <div className="app">
-        <div className="movie-list">
+        {/* 캐러셀 */}
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={20} // 카드 사이 간격
+          slidesPerView={5} // 한 화면에 보이는 카드 개수
+          navigation // 좌우 화살표
+          pagination={{ clickable: true }} // 하단 점 네비게이션
+          loop={true} // 무한 루프
+        >
           {movies.map((movie) => (
-            <Moviecard 
-              key={movie.id} 
-              title={movie.title}
-              posterUrl={imageBaseUrl + movie.poster_path}
-              rating={movie.vote_average}
-            />
-          ))}
-        </div>
+            <SwiperSlide key={movie.id}>
+              <Moviecard 
+                title={movie.title}
+                posterUrl={imageBaseUrl + movie.poster_path}
+                rating={movie.vote_average}
+              />
+            </SwiperSlide>
+            ))}
+        </Swiper>
       </div>
     </>
   )
