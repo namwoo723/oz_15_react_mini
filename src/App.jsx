@@ -20,6 +20,7 @@ function App() {
     // }
     setMovies(movieListData.results)
   }, [])
+  console.log(import.meta.env.VITE_TMDB_TOKEN);
 
   return (
     <>
