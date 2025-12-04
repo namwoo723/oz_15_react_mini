@@ -5,6 +5,7 @@ import { SwiperSlide, Swiper } from 'swiper/react'
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { Link } from 'react-router-dom';
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/w500" 
 
@@ -44,11 +45,13 @@ function HomePage() {
           >
             {movies.map((movie) => (
               <SwiperSlide key={movie.id}>
-                <Moviecard 
-                  title={movie.title}
-                  posterUrl={imageBaseUrl + movie.poster_path}
-                  rating={movie.vote_average}
-                />
+                <Link to={`/movie/${movie.id}`}>
+                  <Moviecard 
+                    title={movie.title}
+                    posterUrl={imageBaseUrl + movie.poster_path}
+                    rating={movie.vote_average}
+                  />
+                </Link>
               </SwiperSlide>
               ))}
           </Swiper>
