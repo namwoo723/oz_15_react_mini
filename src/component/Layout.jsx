@@ -9,7 +9,7 @@ export default function Layout () {
       </header>
       <main>
         <Outlet />
-      </main> 
+      </main>
     </>
-)
+  ) 
 }

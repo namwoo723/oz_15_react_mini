@@ -27,7 +27,7 @@ function App() {
         {/* 캐러셀 */}
         <Swiper
           modules={[Navigation, Pagination]}
-          spaceBetween={20} // 카드 사이 간격
+          spaceBetween={10} // 카드 사이 간격
           slidesPerView={5} // 한 화면에 보이는 카드 개수
           navigation // 좌우 화살표
           pagination={{ clickable: true }} // 하단 점 네비게이션
