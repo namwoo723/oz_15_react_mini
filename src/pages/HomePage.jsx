@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import Moviecard from "../component/MovieCard"
 import { Navigation, Pagination } from 'swiper/modules'
 import { SwiperSlide, Swiper } from 'swiper/react'
@@ -6,29 +5,20 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Link } from 'react-router-dom';
+import useFetch from '../hooks/useFetch';
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/w500" 
 
 function HomePage() {
-  const [ movies, setMovies ] = useState([])
+  const { data, loading, error } = useFetch(
+    'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1'
+  );
   
-  useEffect(() => {
-    const options = {
-      method: 'GET', 
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`
-      }
-    };
+  if (loading) return <div>로딩 중...</div>
 
-    fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', options)
-      .then(res => res.json())
-      .then(data => {
-        const filtered = data.results.filter(m => m.adult === false)
-        setMovies(filtered)
-      })
-      .catch(err => console.error(err));
-  }, [])
+  if (error) return <div>에러 발생</div>
+
+  const movies = data?.results.filter(m => !m.adult) || [];
 
   return (
     <>

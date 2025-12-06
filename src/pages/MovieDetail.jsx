@@ -1,53 +1,40 @@
 import { useEffect, useState } from "react"
 import "../styles/MovieDetail.scss"
 import { useParams } from "react-router-dom"
+import useFetch from "../hooks/useFetch"
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/w500" 
 
 export default function MovieDetail() {
-  const [details, setDetails] = useState(null)
   const { id } = useParams()
 
-  useEffect(() => {
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`  
-      }
-    };
+  const { data, loading, error } = useFetch(
+    `https://api.themoviedb.org/3/movie/${id}?language=en-US`
+  );
 
-    fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options)
-      .then(res => res.json())
-      .then(data => {
-        setDetails(data)
-      })
-      .catch(err => console.error(err));
-  }, [id])
+  if (loading) return <div>로딩 중...</div>
 
-  if (!details) {
-    return <div className="movie-detail">로딩 중...</div>
-  }
+  if (error) return <div>에러 발생</div>
 
-  const genreNames = details.genres.map((g) => g.name).join(", ")
+  const genreNames = data.genres.map((g) => g.name).join(", ")
 
   return (
     <div className="movie-detail">
       <div className="poster-wrap">
         <img
           className="poster"
-          src={imageBaseUrl + details.poster_path}
-          alt={details.title}
+          src={imageBaseUrl + data.poster_path}
+          alt={data.title}
         />
       </div>
 
       <div className="info-wrap">
         <div className="title">
-          <h2>{details.title}</h2>
-          <span>{details.vote_average}</span>
+          <h2>{data.title}</h2>
+          <span>{data.vote_average}</span>
         </div>
         <div className="genres">{genreNames}</div>
-        <div className="overview">{details.overview}</div>
+        <div className="overview">{data.overview}</div>
       </div>
     </div>
   )
