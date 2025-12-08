@@ -5,14 +5,13 @@ import useDebounce from "../hooks/useDebounce";
 export default function NavBar() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
-
   const [search, setSearch] = useState(query);
   const debouncedSearch = useDebounce(search, 500);
 
   // 디바운스된 값이 바뀔 때마다 URL 쿼리 업데이트
   useEffect(() => {
     if (debouncedSearch) {
-      setSearchParams({ query: debouncedSearch });
+      setSearchParams({ query: debouncedSearch }, { replace: true });
     } else {
       setSearchParams({});
     }
