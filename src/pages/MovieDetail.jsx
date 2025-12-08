@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import "../styles/MovieDetail.scss"
 import { useParams } from "react-router-dom"
 import useFetch from "../hooks/useFetch"
