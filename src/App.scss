@@ -1,0 +1,113 @@
+/* 전체 기본 세팅 */
+body {
+  margin: 0;
+  background: #111111;
+  color: #f5f5f5;
+}
+
+/* 페이지 기본 레이아웃 */
+.app {
+  max-width: none;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+/* --- NavBar --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #333;
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.navbar h1 a {
+  color: #f5f5f5;
+  text-decoration: none;
+}
+
+.navbar input {
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #222;
+  color: #f5f5f5;
+  font-size: 0.9rem;
+}
+
+.navbar button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  border: none;
+  background: #6c5ce7;
+  color: #fff;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.navbar button + button {
+  background: #00b894;
+}
+
+.navbar button:hover {
+  filter: brightness(1.05);
+}
+
+/* --- Swiper(캐러셀) --- */
+.swiper {
+  padding: 1.5rem 0 2.5rem;
+}
+
+/* 좌우 화살표 색 */
+.swiper-button-prev,
+.swiper-button-next {
+  color: #fff;
+}
+
+/* 캐러샐 하단 점 색 */
+.swiper-pagination-bullet {
+  background: #666;
+  opacity: 1;
+}
+.swiper-pagination-bullet-active {
+  background: #fff;
+}
+
+/* Movie 카드 기본 스타일 */
+/* SwiperSlide 안에 있는 카드/링크 전체를 블록으로 */
+.swiper-slide a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.movie-card img,
+.swiper-slide img {
+  width: 100%;
+  height: 40rem;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* 제목 / 평점 */
+.movie-card-title,
+.swiper-slide h3 {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f5f5f5;
+}
+
+.movie-card-rating,
+.swiper-slide p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #bbbbbb;
+}
