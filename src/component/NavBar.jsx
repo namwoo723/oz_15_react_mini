@@ -1,6 +1,9 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useDebounce from "../hooks/useDebounce";
+import { useSupabaseAuth } from "../supabase";
+import { useAuthContext } from "../context/AuthContext";
+import Button from "./Button";
 
 export default function NavBar() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -9,7 +12,11 @@ export default function NavBar() {
   const [search, setSearch] = useState(query);
   const debouncedSearch = useDebounce(search, 500);
 
-  // 디바운스된 값이 바뀔 때마다 URL 쿼리 업데이트
+  const { logout } = useSupabaseAuth();
+  const { user, setUser } = useAuthContext();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   useEffect(() => {
     if (debouncedSearch) {
       setSearchParams({ query: debouncedSearch });
@@ -18,25 +25,70 @@ export default function NavBar() {
     }
   }, [debouncedSearch, setSearchParams]);
 
+  const handleLogout = async () => {
+    await logout();
+    setUser(null);
+    setIsMenuOpen(false);
+  };
+
+  const isLoggedIn = !!user;
+
   return (
     <nav className="navbar">
       <h1>
         <Link to="/">Movies</Link>
       </h1>
-      
+
       <input
         type="text"
         placeholder="제목"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <div className="buttons">
-        <Link to="/login">
-          <button>로그인</button>
-        </Link>
-        <Link to="/signup">
-          <button>회원가입</button>
-        </Link>
+
+      <div className="navbar-right">
+        {isLoggedIn ? (
+          <div
+            className="profile-wrapper"
+            onMouseEnter={() => setIsMenuOpen(true)}
+            onMouseLeave={() => setIsMenuOpen(false)}
+          >
+            <button
+              type="button"
+              className="profile-thumbnail"
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+            >
+              <span className="profile-initial">
+                {user.userName?.[0] || "U"}
+              </span>
+            </button>
+
+            {isMenuOpen && (
+              <div className="profile-menu">
+                <span className="profile-menu-item">{user.userName} 님</span>
+                <div className="profile-menu-item">
+                  마이 페이지
+                </div>
+                <button
+                  type="button"
+                  className="profile-menu-item"
+                  onClick={handleLogout}
+                >
+                  로그아웃
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="buttons">
+            <Link to="/login">
+              <Button variant="outline">로그인</Button>
+            </Link>
+            <Link to="/signup">
+              <Button>회원가입</Button>
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

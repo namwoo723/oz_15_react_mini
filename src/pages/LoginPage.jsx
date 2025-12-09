@@ -1,12 +1,19 @@
 import { useState } from "react";
 import FormInput from "../component/FormInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSupabaseAuth } from "../supabase";
+import { useAuthContext } from "../context/AuthContext";
 
 const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function LoginPage() {
   const [form, setForm] = useState({ email: "", password: ""})
   const [errors, setErrors] =useState({ email: "", password: ""});
+  const [serverError, setServerError] = useState("")
+
+  const { login } = useSupabaseAuth();
+  const { setUser } = useAuthContext();
+  const navigate = useNavigate()
 
   const handleChange = (field) => (e) => {
     const value = e.target.value;
@@ -32,13 +39,25 @@ function LoginPage() {
     return Object.values(newErrors).every(v => v === "")
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!validate()) return;
+    setServerError("")
 
-    console.log("로그인 시도", form);
-    alert("로그인 요청 전송 (콘솔 확인)");
-  }
+    if (!validate()) return;
+    const res = await login({
+      email: form.email,
+      password: form.password,
+    });
+
+    if (res.error) {
+      setServerError(res.error.message || "로그인에 실패했습니다.");
+      return;
+    }
+
+    setUser(res.user);
+    navigate("/"); // 메인 페이지로 이동
+  };
+  
 
   return (
     <section className="auth-page">
@@ -64,6 +83,8 @@ function LoginPage() {
           onChange={handleChange("password")}
           error={errors.password}
         />
+
+        {serverError && <p className="form-error">{serverError}</p>}
 
         <button type="submit" className="auth-submit">
           로그인

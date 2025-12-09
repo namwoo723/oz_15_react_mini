@@ -1,5 +1,8 @@
 import { useState } from "react";
 import FormInput from "../component/FormInput";
+import { useSupabaseAuth } from "../supabase";
+import { useAuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const nameReg = /^[가-힣a-zA-Z0-9]{2,8}$/;
 const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -20,6 +23,12 @@ function SignupPage() {
     password: "",
     passwordConfirm: ""    
   })
+
+  const [serverError, setServerError] = useState("")
+
+  const { signUp } = useSupabaseAuth();
+  const { setUser } = useAuthContext()
+  const navigate = useNavigate()
 
   const handleChange = (field) => (e) => {
     const value = e.target.value;
@@ -69,14 +78,34 @@ function SignupPage() {
     return Object.values(newErrors).every((v) => v === "")
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setServerError("")
+
     if (!validate()) return;
-    
-    console.log("회원가입 성공!", form);
-    alert("회원가입 요청 전송 (콘솔 확인)");
+
+    const { email, password, name } = {
+      email: form.email,
+      password: form.password,
+      name: form.name,
+    }
+
+    const res = await signUp({
+      email,
+      password,
+      userName: name,
+    });
+
+    if (res.error) {
+      setServerError(res.error.message || "회원가입에 실패했습니다.");
+      return;
+    }
+
+    // 성공: 전역 상태 업데이트 + 메인 페이지로 이동
+    setUser(res.user);
+    navigate("/");
   }
-  
+
   return (
     <section className="auth-page">
       <h2 className="auth-title">회원가입</h2>
@@ -120,6 +149,8 @@ function SignupPage() {
           onChange={handleChange("passwordConfirm")}
           error={errors.passwordConfirm}
         />
+
+        {serverError && <p className="form-error">{serverError}</p>}
 
         <button type="submit" className="auth-submit">
           회원가입
