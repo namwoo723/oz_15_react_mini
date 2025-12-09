@@ -31,8 +31,12 @@ export default function NavBar() {
         onChange={(e) => setSearch(e.target.value)}
       />
       <div className="buttons">
-        <button>로그인</button>
-        <button>회원가입</button>
+        <Link to="/login">
+          <button>로그인</button>
+        </Link>
+        <Link to="/signup">
+          <button>회원가입</button>
+        </Link>
       </div>
     </nav>
   );
