@@ -9,9 +9,11 @@ const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function LoginPage() {
   const [form, setForm] = useState({ email: "", password: ""})
   const [errors, setErrors] =useState({ email: "", password: ""});
+  // Supabase에서 온 에러 메시지 관리
   const [serverError, setServerError] = useState("")
 
   const { login } = useSupabaseAuth();
+  // 전역 로그인 상태 갱신
   const { setUser } = useAuthContext();
   const navigate = useNavigate()
 
@@ -40,6 +42,7 @@ function LoginPage() {
   }
 
   const handleSubmit = async (e) => {
+    // 새로고침 없이 리액트 흐름 제어 코드
     e.preventDefault();
     setServerError("")
 

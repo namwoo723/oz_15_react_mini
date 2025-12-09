@@ -13,8 +13,9 @@ export default function NavBar() {
   const debouncedSearch = useDebounce(search, 500);
 
   const { logout } = useSupabaseAuth();
+  // 로그아웃시, 전역에서 로그아웃 상태로 UI가 바뀌도록 해주는 것.
   const { user, setUser } = useAuthContext();
-
+  //이미지 드롭다운 메뉴(마이페이지/로그아웃)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function NavBar() {
     setUser(null);
     setIsMenuOpen(false);
   };
-
+  // 로그인 여부 불리언
   const isLoggedIn = !!user;
 
   return (
@@ -54,7 +55,7 @@ export default function NavBar() {
             onMouseLeave={() => setIsMenuOpen(false)}
           >
             <button
-              type="button"
+              type="button" 
               className="profile-thumbnail"
               onClick={() => setIsMenuOpen((prev) => !prev)}
             >

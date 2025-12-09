@@ -79,17 +79,12 @@ function SignupPage() {
   }
 
   const handleSubmit = async (e) => {
+    // 새로고침 없이 리액트 흐름 제어 코드
     e.preventDefault();
     setServerError("")
 
     if (!validate()) return;
-
-    const { email, password, name } = {
-      email: form.email,
-      password: form.password,
-      name: form.name,
-    }
-
+    // signUp 함수로 보내는 것
     const res = await signUp({
       email,
       password,

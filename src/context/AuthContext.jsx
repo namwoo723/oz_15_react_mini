@@ -2,14 +2,18 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useSupabaseAuth } from "../supabase";
 
+// 로그인 관련 전역 상태를 담을 컨텍스트
 const AuthContext = createContext(null);
 
+
+// 실제로 상태를 만들고 <AutoContext.Provider>를 감싸주는 컴포넌트
 export function AuthProvider({ children }) {
   const { getUserInfo } = useSupabaseAuth();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // 버그 방지용
     let ignore = false;
 
     const setupUser = async () => {
@@ -57,11 +61,17 @@ export function AuthProvider({ children }) {
 
   const value = { user, setUser, loading };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
+// useContext(AuthContext) 커스텀 훅
 export function useAuthContext() {
   const ctx = useContext(AuthContext);
+  // “AuthProvider로 안 감싸고 썼다” 는 버그를 바로 알려주려고 throw 추가
   if (!ctx) {
     throw new Error("useAuthContext는 AuthProvider 안에서만 사용해야 합니다.");
   }
